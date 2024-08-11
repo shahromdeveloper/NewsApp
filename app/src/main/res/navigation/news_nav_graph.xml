@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/news_nav_graph"
+    app:startDestination="@id/headlinesFragment">
+
+    <fragment
+        android:id="@+id/headlinesFragment"
+        android:name="tj.donishomuz.megafonapk.ui.fragments.HeadlinesFragment"
+        android:label="HeadlinesFragment">
+        <action
+            android:id="@+id/action_headlinesFragment_to_articleFragment"
+            app:destination="@id/articleFragment"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="tj.donishomuz.megafonapk.ui.fragments.FavoriteFragment"
+        android:label="FavoritesFragment">
+        <action
+            android:id="@+id/action_favoritesFragment_to_articleFragment"
+            app:destination="@id/articleFragment"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="tj.donishomuz.megafonapk.ui.fragments.SearchFragment"
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/action_searchFragment_to_articleFragment"
+            app:destination="@id/articleFragment"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="tj.donishomuz.megafonapk.ui.fragments.ArticleFragment"
+        android:label="ArticleFragment" >
+        <argument
+            android:name="article"
+            app:argType="tj.donishomuz.megafonapk.models.Article" />
+    </fragment>
+</navigation>
