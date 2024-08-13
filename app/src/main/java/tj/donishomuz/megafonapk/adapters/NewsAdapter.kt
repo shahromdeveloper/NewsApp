@@ -1,5 +1,6 @@
 package tj.donishomuz.megafonapk.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +60,8 @@ class NewsAdapter() : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         articleTitle = holder.itemView.findViewById(R.id.articleTitle)
         articleDateTime = holder.itemView.findViewById(R.id.articleDateTime)
 
+
+        Log.d("TESTTTT", article.urlToImage.toString())
 
         holder.itemView.apply {
             Glide.with(this)

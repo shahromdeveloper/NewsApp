@@ -130,8 +130,10 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
     private fun fetchImages() {
         lifecycleScope.launch {
             try {
-                val images = RetrofitInstance.api.getImages()
-                setupViewPager(images)
+                val images = RetrofitInstance.api.getHeadlines(
+                    "us", 1
+                )
+                setupViewPager(images.body()!!.articles)
             } catch (e: Exception) {
 
             }

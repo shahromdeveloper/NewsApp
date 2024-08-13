@@ -7,6 +7,11 @@ import retrofit2.http.Query
 import tj.donishomuz.megafonapk.models.Article
 
 interface NewsAPI {
+
+    companion object {
+        const val API_KEY = "77a0be9ab5e9406b8806dea96af9cebf"
+    }
+
     @GET("v2/top-headlines")
     suspend fun getHeadlines(
         @Query("country")
@@ -14,7 +19,7 @@ interface NewsAPI {
         @Query("page")
         pageNumber: Int = 1,
         @Query("apiKey")
-        apiKey: String = "77a0be9ab5e9406b8806dea96af9cebf"
+        apiKey: String = API_KEY
     ): Response<NewsResponse>
 
 
@@ -25,16 +30,7 @@ interface NewsAPI {
         @Query("page")
         pageNumber: Int = 1,
         @Query("apiKey")
-        apiKey: String = "77a0be9ab5e9406b8806dea96af9cebf"
+        apiKey: String = API_KEY
     ): Response<NewsResponse>
 
-    @GET("v2/top-headlines")
-    suspend fun getImages(): List<Article>
-
-
-        @GET("v2/top-headlines")
-        suspend fun getTopHeadlines(
-            @Query("country") country: String = "us",
-            @Query("apiKey") apiKey: String
-        ): NewsResponse
 }
