@@ -1,4 +1,4 @@
-package tj.donishomuz.megafonapk.util
+package tj.donishomuz.megafonapk.models
 
 sealed class Resource<T>(
     val data: T? = null,

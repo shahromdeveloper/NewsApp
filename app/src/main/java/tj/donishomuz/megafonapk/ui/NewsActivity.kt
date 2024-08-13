@@ -26,15 +26,6 @@ class NewsActivity : AppCompatActivity() {
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val adapter= ViewPagerAdapter(supportFragmentManager)
-
-        adapter.addFragment(AllNewsFragment(),"All News")
-        adapter.addFragment(BusinessFragment(),"Business")
-        adapter.addFragment(PoliticsFragment(),"Politics")
-        adapter.addFragment(TechFragment(),"Tech")
-
-        binding.viewPager.adapter=adapter
-        binding.tbLayout.setupWithViewPager(binding.viewPager)
 
         val newsRemoteRepository = NewsRemoteRepository()
         val newsLocalRepository = NewsLocalRepository(ArticleDatabase(this))

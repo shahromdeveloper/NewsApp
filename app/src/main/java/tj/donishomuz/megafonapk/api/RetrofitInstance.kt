@@ -1,6 +1,5 @@
 package tj.donishomuz.megafonapk.api
 
-import tj.donishomuz.megafonapk.util.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -16,7 +15,7 @@ class RetrofitInstance {
                 .build()
 
             Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl("https://newsapi.org/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

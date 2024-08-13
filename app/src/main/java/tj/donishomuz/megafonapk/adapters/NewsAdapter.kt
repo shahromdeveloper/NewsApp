@@ -3,20 +3,25 @@ package tj.donishomuz.megafonapk.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import tj.donishomuz.megafonapk.R
 import tj.donishomuz.megafonapk.models.Article
+import tj.donishomuz.megafonapk.ui.NewsViewModel
 
-class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
+class NewsAdapter() : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private lateinit var articleImage: ImageView
+
     //private lateinit var articleSource: TextView
     private lateinit var articleTitle: TextView
     private lateinit var articleDateTime: TextView
@@ -30,6 +35,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
             return oldItem == newItem
         }
     }
+
 
     val differ = AsyncListDiffer(this, differCallback)
 
@@ -53,6 +59,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         articleTitle = holder.itemView.findViewById(R.id.articleTitle)
         articleDateTime = holder.itemView.findViewById(R.id.articleDateTime)
 
+
         holder.itemView.apply {
             Glide.with(this)
                 .load(article.urlToImage)
@@ -74,7 +81,9 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     fun setOnItemClickListener(listener: (Article) -> Unit) {
         onItemClickListener = listener
+
     }
+
 }
 
 

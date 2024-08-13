@@ -20,9 +20,7 @@ import tj.donishomuz.megafonapk.adapters.NewsAdapter
 import tj.donishomuz.megafonapk.databinding.FragmentSearchBinding
 import tj.donishomuz.megafonapk.ui.NewsActivity
 import tj.donishomuz.megafonapk.ui.NewsViewModel
-import tj.donishomuz.megafonapk.util.Constants
-import tj.donishomuz.megafonapk.util.Constants.Companion.SEARCH_NEWS_TIME_DELAY
-import tj.donishomuz.megafonapk.util.Resource
+import tj.donishomuz.megafonapk.models.Resource
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -64,7 +62,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.searchEdit.addTextChangedListener() { editable ->
             job?.cancel()
             job = MainScope().launch {
-                delay(SEARCH_NEWS_TIME_DELAY)
+                delay(500L)
                 editable?.let {
                     if (editable.toString().isNotEmpty()) {
                         newsViewModel.searchNews(editable.toString())
@@ -80,7 +78,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     hideErrorMessage()
                     response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
-                        val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                        val totalPages = newsResponse.totalResults / 20 + 2
                         isLastPage = newsViewModel.searchNewsPage == totalPages
 
                         if (isLastPage) {
@@ -153,7 +151,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeigining = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
+            val isTotalMoreThanVisible = totalItemCount >= 20
             val shouldPaginate =
                 isNoErrors && isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeigining
                         && isTotalMoreThanVisible && isScrolling

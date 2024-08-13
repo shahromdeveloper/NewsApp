@@ -13,7 +13,7 @@ import tj.donishomuz.megafonapk.models.Article
 import tj.donishomuz.megafonapk.models.NewsResponse
 import tj.donishomuz.megafonapk.repository.local.NewsLocalRepository
 import tj.donishomuz.megafonapk.repository.remote.NewsRemoteRepository
-import tj.donishomuz.megafonapk.util.Resource
+import tj.donishomuz.megafonapk.models.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException

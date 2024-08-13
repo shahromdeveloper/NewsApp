@@ -1,23 +1,43 @@
 package tj.donishomuz.megafonapk.adapters
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import android.provider.ContactsContract.CommonDataKinds.Im
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import tj.donishomuz.megafonapk.R
+import tj.donishomuz.megafonapk.models.Article
 
-class ViewPagerAdapter(fm : FragmentManager) : FragmentStatePagerAdapter(fm){
+class ViewPagerAdapter(
+    private val images: List<Article>
+) : RecyclerView.Adapter<ViewPagerAdapter.ImageViewHolder>() {
 
-    private val mFrgmentList = ArrayList<Fragment>()
-    private val mFrgmentTitleList = ArrayList<String>()
+    private lateinit var vptext: TextView
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
+        return ImageViewHolder(view)
+    }
 
-    override fun getCount() = mFrgmentList.size
+    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+        holder.bind(images[position].urlToImage.toString())
+        vptext = holder.itemView.findViewById(R.id.vp_text)
+        vptext.text = images[position].title
 
-    override fun getItem(position: Int) = mFrgmentList[position]
+    }
 
-    override fun getPageTitle(position: Int) = mFrgmentTitleList[position]
+    override fun getItemCount(): Int = images.size
+    inner class ImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val imageView: ImageView = view.findViewById(R.id.image_view)
 
-    fun addFragment(fragment:Fragment,title:String){
-        mFrgmentList.add(fragment)
-        mFrgmentTitleList.add(title)
+        fun bind(imageUrl: String) {
+            Glide.with(itemView.context)
+                .load(imageUrl)
+                .into(imageView)
+        }
     }
 }
+
