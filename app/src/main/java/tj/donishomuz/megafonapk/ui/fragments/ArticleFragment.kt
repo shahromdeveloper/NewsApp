@@ -1,5 +1,6 @@
 package tj.donishomuz.megafonapk.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -21,24 +22,22 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     private val args: ArticleFragmentArgs by navArgs()
     private lateinit var binding: FragmentArticleBinding
     private lateinit var titleText: TextView
-    //private lateinit var sourceText: TextView
     private lateinit var dateTimeText: TextView
-    private lateinit var contentText: TextView
-    //private lateinit var authorText: TextView
+    private lateinit var description: TextView
     private lateinit var articleImage: ImageView
     private lateinit var bookmarkButton: ImageButton
+    private lateinit var share: ImageButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentArticleBinding.bind(view)
 
         titleText = view.findViewById(R.id.articleTitle)
-       // sourceText = view.findViewById(R.id.articleSource)
         dateTimeText = view.findViewById(R.id.articleDateTime)
-        contentText = view.findViewById(R.id.articleContent)
-        //authorText = view.findViewById(R.id.articleAuthor)
+        description = view.findViewById(R.id.description)
         articleImage = view.findViewById(R.id.articleImage)
         bookmarkButton = view.findViewById(R.id.btnBookmark)
+        share = view.findViewById(R.id.share)
 
         newsViewModel = (activity as NewsActivity).newsViewModel
         var article = args.article
@@ -47,6 +46,17 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.share.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, article.title+"\n\n"+article.description)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                context?.startActivity(shareIntent)
+
         }
 
         binding.btnBookmark.setOnClickListener {
@@ -77,15 +87,13 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     private fun setContent(article: Article) {
         titleText.text = article.title
-      //  sourceText.text = article.source?.name ?: ""
         dateTimeText.text = article.publishedAt?.substring(0, 10)
-        contentText.text = article.description
-      //  authorText.text = article.author
+        description.text = article.description
 
         Glide.with(this)
             .load(article.urlToImage)
-            .placeholder(R.drawable.image_newspaper)
-            .error(R.drawable.image_newspaper)
+            .placeholder(R.drawable.news)
+            .error(R.drawable.news)
             .into(articleImage)
     }
 

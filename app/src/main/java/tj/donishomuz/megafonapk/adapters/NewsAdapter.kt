@@ -1,5 +1,6 @@
 package tj.donishomuz.megafonapk.adapters
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -52,39 +53,41 @@ class NewsAdapter() : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     private var onItemClickListener: ((Article) -> Unit)? = null
 
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = differ.currentList[position]
 
         articleImage = holder.itemView.findViewById(R.id.articleImage)
-        //articleSource = holder.itemView.findViewById(R.id.articleSource)
         articleTitle = holder.itemView.findViewById(R.id.articleTitle)
         articleDateTime = holder.itemView.findViewById(R.id.articleDateTime)
 
 
-        Log.d("TESTTTT", article.urlToImage.toString())
+     //   Log.d("TESTTTT", article.urlToImage.toString())
 
         holder.itemView.apply {
             Glide.with(this)
                 .load(article.urlToImage)
-                .placeholder(R.drawable.image_newspaper)
-                .error(R.drawable.image_newspaper)
+                .placeholder(R.drawable.news)
+                .error(R.drawable.news)
                 .into(articleImage)
 
             //articleSource.text = article.source?.name
             articleTitle.text = article.title
             articleDateTime.text = article.publishedAt?.substring(0, 10)
+           // articleContent.text = article.content
 
             setOnClickListener {
                 onItemClickListener?.let {
                     it(article)
                 }
             }
+
         }
     }
 
     fun setOnItemClickListener(listener: (Article) -> Unit) {
         onItemClickListener = listener
-
     }
 
 }

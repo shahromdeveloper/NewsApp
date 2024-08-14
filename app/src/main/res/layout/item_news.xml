@@ -83,13 +83,13 @@
                         android:text="Datjjjjjjjjjje"
                         android:textSize="12sp" />
 
-                    <ImageButton
-                        android:id="@+id/favoButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="28dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_bookmark" />
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/favoButton"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginEnd="28dp"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:src="@drawable/baseline_favorite_24" />-->
 
                 </LinearLayout>
 

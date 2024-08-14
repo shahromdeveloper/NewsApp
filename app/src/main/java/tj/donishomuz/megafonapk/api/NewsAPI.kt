@@ -9,7 +9,7 @@ import tj.donishomuz.megafonapk.models.Article
 interface NewsAPI {
 
     companion object {
-        const val API_KEY = "77a0be9ab5e9406b8806dea96af9cebf"
+        const val API_KEY = "fcb16e35e0cb4eb287d939f2191d6ccd"
     }
 
     @GET("v2/top-headlines")
@@ -21,7 +21,6 @@ interface NewsAPI {
         @Query("apiKey")
         apiKey: String = API_KEY
     ): Response<NewsResponse>
-
 
     @GET("/v2/everything")
     suspend fun search(

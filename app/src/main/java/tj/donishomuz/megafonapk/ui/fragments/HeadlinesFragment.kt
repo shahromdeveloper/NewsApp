@@ -16,17 +16,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import tj.donishomuz.megafonapk.R
 import tj.donishomuz.megafonapk.adapters.NewsAdapter
 import tj.donishomuz.megafonapk.adapters.ViewPagerAdapter
 import tj.donishomuz.megafonapk.adapters.ViewPagerAdapter22
+import tj.donishomuz.megafonapk.api.NewsAPI.Companion.API_KEY
 import tj.donishomuz.megafonapk.api.RetrofitInstance
 import tj.donishomuz.megafonapk.databinding.FragmentHeadlinesBinding
 import tj.donishomuz.megafonapk.models.Article
 import tj.donishomuz.megafonapk.ui.NewsActivity
 import tj.donishomuz.megafonapk.ui.NewsViewModel
 import tj.donishomuz.megafonapk.models.Resource
+import kotlin.random.Random
 
 class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
 
@@ -40,7 +43,7 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: ViewPagerAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override  fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHeadlinesBinding.bind(view)
 
@@ -50,22 +53,11 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
         adapterVp.addFragment(BusinessFragment(),"Busines")
         adapterVp.addFragment(PoliticsFragment(),"Politics")
         adapterVp.addFragment(TechFragment(),"Tech")
-        adapterVp.addFragment(TechFragment(),"Science")
 
         binding.vPager.adapter=adapterVp
         binding.tbLayout.setupWithViewPager(binding.vPager)
 
         viewPager = view.findViewById(R.id.view_pager)
-//        val imageList = ArrayList<SlideModel>()
-//
-//        imageList.add(SlideModel(R.drawable.image_newspaper))
-//        imageList.add(SlideModel(R.drawable.image_newspaper))
-//        imageList.add(SlideModel(R.drawable.image_newspaper))
-//        imageList.add(SlideModel(R.drawable.image_newspaper))
-//        imageList.add(SlideModel(R.drawable.image_newspaper))
-//        binding.imageSlider.setImageList(imageList, ScaleTypes.FIT)
-
-
 
         itemHeadlinesError = view.findViewById(R.id.itemHeadlinesError)
 
@@ -74,7 +66,8 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
         val view: View = inflater.inflate(R.layout.item_error, null)
 
 
-        fetchImages()
+
+       // fetchImages()
 
         retryButton = view.findViewById(R.id.retryButton)
         errorText = view.findViewById(R.id.errorText)
@@ -82,13 +75,24 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
         newsViewModel = (activity as NewsActivity).newsViewModel
 
         setupHeadlinesRecycler()
+        setupViewPager()
 
-        newsAdapter.setOnItemClickListener {
+        newsAdapter.setOnItemClickListener{
             val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
             findNavController().navigate(R.id.action_headlinesFragment_to_articleFragment, bundle)
         }
+
+        adapter.setOnItemClickListener{
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(R.id.action_headlinesFragment_to_articleFragment, bundle)
+        }
+
+
+
 
         newsViewModel.headlines.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
@@ -97,11 +101,13 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
                     hideErrorMessage()
                     response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        adapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults / 20 + 2
                         isLastPage = newsViewModel.headlinesPage == totalPages
 
                         if (isLastPage) {
                             binding.recyclerHeadlines.setPadding(0, 0, 0, 0)
+                            binding.viewPager.setPadding(0, 0, 0, 0)
                         }
                     }
                 }
@@ -127,21 +133,22 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
     }
 
 
-    private fun fetchImages() {
-        lifecycleScope.launch {
-            try {
-                val images = RetrofitInstance.api.getHeadlines(
-                    "us", 1
-                )
-                setupViewPager(images.body()!!.articles)
-            } catch (e: Exception) {
+//    private fun fetchImages() {
+//        lifecycleScope.launch {
+//            try {
+//                val images = RetrofitInstance.api.search("Таджикистан",1)
+////                getHeadlines(
+////                    "us", 1
+////                )
+//                setupViewPager()
+//            } catch (e: Exception) {
+//
+//            }
+//        }
+//    }
 
-            }
-        }
-    }
-
-    private fun setupViewPager(images: List<Article>) {
-        adapter = ViewPagerAdapter(images)
+    private fun setupViewPager() {
+        adapter = ViewPagerAdapter()
         binding.viewPager.adapter = adapter
     }
 
@@ -214,17 +221,6 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
